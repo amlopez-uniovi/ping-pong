@@ -7,9 +7,8 @@ This is a temporary script file.
 
 import numpy as np
 import scipy.signal as sgn
-import matplotlib.pyplot as plt
 
-def segment_signal2(S, ordenfiltro = 1, vecindad = 1, useacceleration = True, fcorte = 0.5):
+def segment_signal(S, ordenfiltro = 1, vecindad = 1, useacceleration = True, fcorte = 0.5):
     """
     Segmentación sobre un grupo de señales pasadas en una lista
     """
@@ -35,5 +34,26 @@ def segment_signal2(S, ordenfiltro = 1, vecindad = 1, useacceleration = True, fc
     locmin = sgn.argrelextrema(h, np.less, order = vecindad)
     
     return (locmin[0], h)
+    
+    
+def filtra_eventos1(eventos, derivada, derivada_menor_que = 1, salto_en_derivada_mayor_que = 10):
+    
+    eventos2 = np.array([t for t in eventos if derivada[t] < derivada_menor_que])
 
+    eventos3 = np.array([eventos2[t] for t in range(eventos2.size-1) if np.amax(derivada[eventos2[t]:eventos2[t+1]])>salto_en_derivada_mayor_que])
+    
+    return eventos3
+    
+
+def divide_golpes(eventos, sens):
+    
+    glp = {}
+    
+    #print(sens)
+    
+    for k in np.arange(eventos.size-1):
+        glp.update({k:(eventos[k], eventos[k+1], sens[:, eventos[k]:eventos[k+1]])})
+        
+    return glp
+    
 
