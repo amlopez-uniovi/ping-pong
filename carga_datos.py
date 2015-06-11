@@ -7,17 +7,16 @@ Created on Thu Jun 11 10:16:26 2015
 
 import scipy.io as sio
 import numpy as np
-import matplotlib.pyplot as plt
 
 
-def carga_datos(fichero):
+def carga_datos(carpeta):
 
-    config_mat = sio.loadmat(fichero, struct_as_record=False, squeeze_me=True)
+    config_mat = sio.loadmat(carpeta+'/config.mat', struct_as_record=False, squeeze_me=True)
     
     silop_config_struct = config_mat['SILOP_CONFIG']
     
-    datos = np.loadtxt('./prueba_inicial/datos/datos.log')
-    datos_alg = np.loadtxt('./prueba_inicial/datos/datos_alg.log')
+    datos = np.loadtxt(carpeta+'/datos.log')
+    datos_alg = np.loadtxt(carpeta+'/datos_alg.log')
     datos = np.concatenate((datos, datos_alg), axis = 1)
     
     flex_munheca = datos[:, silop_config_struct.SENHALES.m.flex-1]

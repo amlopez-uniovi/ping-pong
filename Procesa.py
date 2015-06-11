@@ -16,7 +16,7 @@ Cargo y represento datos
 """
  
  
-senhales = c_d.carga_datos('./prueba_inicial/datos/config.mat') 
+senhales = c_d.carga_datos('./prueba_inicial/datos') 
 
 flex_munheca = senhales['flex_munheca']
 abd_munheca = senhales['abd_munheca']
