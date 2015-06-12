@@ -8,7 +8,7 @@ This is a temporary script file.
 import numpy as np
 import scipy.signal as sgn
 
-def segment_signal(S, ordenfiltro = 1, vecindad = 1, useacceleration = True, fcorte = 0.5):
+def segment_signal_va(S, ordenfiltro = 1, vecindad = 1, useacceleration = True, fcorte = 0.5):
     """
     Segmentación sobre un grupo de señales pasadas en una lista
     """
@@ -35,6 +35,20 @@ def segment_signal(S, ordenfiltro = 1, vecindad = 1, useacceleration = True, fco
     
     return (locmin[0], h)
     
+
+def segment_signal_fpb(senhal, ordenfiltro = 1, vecindad = 1, fcorte = 0.5):
+    """
+    Segmentación sobre una señal previamente suavizada con un filtro paso bajo
+    """
+        
+    b,a = sgn.butter(5, fcorte, 'lowpass', output = 'ba')
+   
+    filtrada = sgn.filtfilt(b, a, senhal)
+    
+    locmin = sgn.argrelextrema(filtrada, np.less, order = vecindad)
+    
+    return (locmin[0], filtrada)
+
     
 def filtra_eventos1(eventos, derivada, derivada_menor_que = 1, salto_en_derivada_mayor_que = 10):
     
