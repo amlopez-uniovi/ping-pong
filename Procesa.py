@@ -16,7 +16,7 @@ Cargo y represento datos
 """
  
  
-senhales = c_d.carga_datos('./prueba_inicial/datos') 
+senhales = c_d.carga_datos('./prueba2/datos2') 
 
 flex_munheca = senhales['flex_munheca']
 abd_munheca = senhales['abd_munheca']
@@ -57,9 +57,17 @@ plt.grid()
 Segmento datos, postproceso y represento segmentación
 """
 
-res = sgm.segment_signal([flex_munheca, abd_munheca, flex_codo, pron_codo, flex_hombro, rot_hombro, abd_hombro], 
-                          vecindad = 10, useacceleration = False, ordenfiltro = 20, fcorte = 0.05)
-eventos = sgm.filtra_eventos1(eventos = res[0], derivada = res[1], derivada_menor_que = 1, salto_en_derivada_mayor_que = 10)
+#res = sgm.segment_signal([flex_munheca, abd_munheca, flex_codo, pron_codo, flex_hombro, rot_hombro, abd_hombro], 
+#                          vecindad = 10, useacceleration = True, ordenfiltro = 20, fcorte = 0.05)
+#res = sgm.segment_signal_va([flex_codo, pron_codo, flex_hombro, rot_hombro, abd_hombro], 
+#                          vecindad = 5, useacceleration = False, ordenfiltro = 5, fcorte = 0.01)
+
+#eventos = sgm.filtra_eventos1(eventos = res[0], derivada = res[1], derivada_menor_que = 5, salto_en_derivada_mayor_que = 0)
+
+
+res = sgm.segment_signal_fpb(senhal = rot_hombro, ordenfiltro = 5, vecindad =50, fcorte = 0.05)
+eventos = res[0]
+
 
 fig2 = plt.figure(2)
 
@@ -82,8 +90,7 @@ ax2.yaxis.tick_right()
 ax2.yaxis.set_label_position("right")
 ax2.set_ylabel("veloc-acel ")
 
-ax2.bar(res[0], np.ones(res[0].size)*20)
-ax2.bar(eventos, np.ones(eventos.size)*(-20))
+ax2.bar(eventos, np.ones(eventos.size)*(-2))
 
 ax2.grid()
 
@@ -95,4 +102,9 @@ golpes = sgm.divide_golpes(eventos, np.array((flex_munheca, abd_munheca,
                                                  flex_codo, pron_codo,
                                                  flex_hombro, rot_hombro, abd_hombro)))
 
-clasificacion = cls.clasifica_golpes_mdtw(golpes)
+patrones = {'forward':[golpes[14], golpes[15], golpes[16]], 
+            'top-spin':[golpes[34], golpes[35], golpes[36]], 
+            'bottom-spin': [golpes[54], golpes[55], golpes[56]]}
+
+clasificacion = cls.clasifica_golpes_mdtw(golpes, patrones)
+
