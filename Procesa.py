@@ -108,5 +108,5 @@ patrones = {'forward':[golpes[14], golpes[15], golpes[16]],
 
 clasificacion = cls.clasifica_golpes_mdtw(golpes, patrones)
 
- [(indice, clasificacion[indice][0]) for indice in clasificacion.keys()]
+[(indice, clasificacion[indice][0]) for indice in clasificacion.keys()]
  
